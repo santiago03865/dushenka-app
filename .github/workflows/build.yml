@@ -18,6 +18,12 @@ jobs:
         with:
           python-version: '3.11'
       
+      - name: Set up Java 17 (REQUIRED for Android SDK)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -37,6 +43,8 @@ jobs:
       
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        env:
+          SKIP_JDK_VERSION_CHECK: true
       
       - name: Accept Android licenses
         run: |
@@ -46,6 +54,7 @@ jobs:
         run: |
           buildozer --version
           python3 --version
+          java -version
           buildozer android debug
       
       - name: Upload APK artifact
